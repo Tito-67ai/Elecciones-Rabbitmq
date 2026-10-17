@@ -1,0 +1,121 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [backend, main]
+  pull_request:
+    branches: [backend, main]
+
+env:
+  JAVA_VERSION: '17'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      rabbitmq:
+        image: rabbitmq:3.12-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and test all modules
+        run: |
+          failed=0
+          for pom in ms-*/pom.xml; do
+            echo "::group::$pom"
+            mvn -B -f "$pom" clean verify || failed=1
+            echo "::endgroup::"
+          done
+          exit $failed
+
+      - name: Report failing tests
+        if: failure()
+        run: |
+          set +e
+          for f in $(grep -rl "Tests run:" --include='*.txt' . 2>/dev/null); do
+            grep -q "Failures: 0, Errors: 0" "$f" && continue
+            chain=$(grep -vE '^[[:space:]]+at ' "$f" | grep -vE '^-+$' \
+              | sed -E 's/Failed to load ApplicationContext for .*/Failed to load ApplicationContext/' \
+              | tr '\n' '|' | tr -s ' ')
+            echo "::error::CHAIN $f :: ${chain:0:1100}"
+            x="${f%.txt}.xml"
+            if [ -f "$x" ]; then
+              log=$(sed -n '/<system-out>/,/<\/system-out>/p' "$x" | tail -n 30 | tr '\n' '|' | tr -s ' ')
+              echo "::error::LOG $x :: ${log:0:1100}"
+            fi
+          done
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            **/target/surefire-reports
+            **/target/failsafe-reports
+
+  docker-build:
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push images
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::8}"
+          SERVICES="ms-registry ms-config-server ms-gateway ms-securityservice ms-patron ms-votacion"
+          for svc in $SERVICES; do
+            echo "Building $svc..."
+            docker build -t ghcr.io/${{ github.repository_owner }}/elecciones-${svc}:${IMAGE_TAG} ./${svc}
+            docker push ghcr.io/${{ github.repository_owner }}/elecciones-${svc}:${IMAGE_TAG}
+          done
+
+  deploy-staging:
+    needs: docker-build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy to staging
+        run: |
+          echo "Deploy to staging environment (kubectl/helm/ssh)..."
+          # kubectl apply -f k8s/staging/
+          # or ssh user@staging "docker compose pull && docker compose up -d"

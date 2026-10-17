@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+
+jwt:
+  secret: test-secret-para-contexto-de-pruebas-0123456789abcdef
+
+eureka:
+  client:
+    enabled: false

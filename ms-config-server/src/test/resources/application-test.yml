@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          clone-on-start: false
+
+eureka:
+  client:
+    enabled: false

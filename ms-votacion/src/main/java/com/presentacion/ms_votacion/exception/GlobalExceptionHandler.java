@@ -1,0 +1,97 @@
+package com.presentacion.ms_votacion.exception;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import feign.FeignException;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    private static final org.slf4j.Logger log =
+            org.slf4j.LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> manejarNoEncontrado(RecursoNoEncontradoException ex) {
+        return construir(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(VotoDuplicadoException.class)
+    public ResponseEntity<ErrorResponse> manejarVotoDuplicado(VotoDuplicadoException ex) {
+        return construir(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResponse> manejarNoSuchElement(NoSuchElementException ex) {
+        return construir(HttpStatus.NOT_FOUND, "El recurso solicitado no existe");
+    }
+
+    @ExceptionHandler(FeignException.NotFound.class)
+    public ResponseEntity<ErrorResponse> manejarFeignNoEncontrado(FeignException.NotFound ex) {
+        return construir(HttpStatus.NOT_FOUND,
+                "El recurso consultado en otro microservicio no existe");
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorResponse> manejarFeign(FeignException ex) {
+        log.error("Error de comunicacion con otro microservicio", ex);
+        return construir(HttpStatus.SERVICE_UNAVAILABLE,
+                "No se pudo comunicar con otro microservicio");
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> manejarValidacion(MethodArgumentNotValidException ex) {
+
+        Map<String, String> campos = new HashMap<>();
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> campos.put(error.getField(), error.getDefaultMessage()));
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Solicitud invalida");
+        body.put("campos", campos);
+
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> manejarBodyInvalido(HttpMessageNotReadableException ex) {
+        return construir(HttpStatus.BAD_REQUEST,
+                "El cuerpo de la solicitud es invalido o tiene formato incorrecto");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> manejarAccesoDenegado(AccessDeniedException ex) {
+        return construir(HttpStatus.FORBIDDEN,
+                "No tiene permisos para realizar esta operacion");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> manejarGenerico(Exception ex) {
+        log.error("Error inesperado en el servidor", ex);
+        return construir(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Ocurrio un error inesperado en el servidor");
+    }
+
+    private ResponseEntity<ErrorResponse> construir(HttpStatus status, String mensaje) {
+        ErrorResponse body = new ErrorResponse(
+                LocalDateTime.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                mensaje
+        );
+        return ResponseEntity.status(status).body(body);
+    }
+}
+

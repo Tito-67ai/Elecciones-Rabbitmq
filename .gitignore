@@ -1,0 +1,49 @@
+﻿# Maven / Java
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# Eclipse
+.metadata/
+.settings/
+.project
+.classpath
+*.snap
+*.index
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Node / Angular (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.cache/
+frontend/coverage/
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+*.tmp
+*.swp
+*.bak
+
+# Secrets / Environment
+.env
+.env.local
+*.pem
+*.key
