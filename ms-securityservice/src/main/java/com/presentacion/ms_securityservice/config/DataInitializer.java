@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.presentacion.ms_securityservice.entity.Rol;
-import com.presentacion.ms_securityservice.entity.Usuario;
+import com.presentacion.ms_securityservice.model.Rol;
+import com.presentacion.ms_securityservice.model.Usuario;
 import com.presentacion.ms_securityservice.repository.UsuarioRepository;
 
 @Configuration

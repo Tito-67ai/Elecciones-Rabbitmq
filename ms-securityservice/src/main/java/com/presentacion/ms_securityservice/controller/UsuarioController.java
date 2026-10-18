@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.presentacion.ms_securityservice.dto.UsuarioAltaDTO;
 import com.presentacion.ms_securityservice.dto.UsuarioModificarDTO;
 import com.presentacion.ms_securityservice.dto.UsuarioSalidaDTO;
-import com.presentacion.ms_securityservice.entity.Usuario;
+import com.presentacion.ms_securityservice.model.Usuario;
 import com.presentacion.ms_securityservice.service.UsuarioService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

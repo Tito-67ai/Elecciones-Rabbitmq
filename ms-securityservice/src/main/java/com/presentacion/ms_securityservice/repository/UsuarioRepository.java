@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.presentacion.ms_securityservice.entity.Usuario;
+import com.presentacion.ms_securityservice.model.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 

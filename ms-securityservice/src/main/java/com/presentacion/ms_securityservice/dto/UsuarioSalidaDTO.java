@@ -1,7 +1,7 @@
 package com.presentacion.ms_securityservice.dto;
 
-import com.presentacion.ms_securityservice.entity.Rol;
-import com.presentacion.ms_securityservice.entity.Usuario;
+import com.presentacion.ms_securityservice.model.Rol;
+import com.presentacion.ms_securityservice.model.Usuario;
 
 public record UsuarioSalidaDTO(
     Long id,

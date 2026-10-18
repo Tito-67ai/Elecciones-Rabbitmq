@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.presentacion.ms_securityservice.dto.LoginRequest;
 import com.presentacion.ms_securityservice.dto.LoginResponse;
-import com.presentacion.ms_securityservice.entity.Usuario;
+import com.presentacion.ms_securityservice.model.Usuario;
 import com.presentacion.ms_securityservice.exception.CredencialesInvalidasException;
 import com.presentacion.ms_securityservice.repository.UsuarioRepository;
 import com.presentacion.ms_securityservice.security.JwtService;

@@ -1,4 +1,4 @@
-package com.presentacion.ms_securityservice.entity;
+package com.presentacion.ms_securityservice.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.presentacion.ms_securityservice.dto.UsuarioAltaDTO;
 import com.presentacion.ms_securityservice.dto.UsuarioModificarDTO;
-import com.presentacion.ms_securityservice.entity.Usuario;
+import com.presentacion.ms_securityservice.model.Usuario;
 import com.presentacion.ms_securityservice.exception.UsuarioYaExisteException;
 import com.presentacion.ms_securityservice.repository.UsuarioRepository;
 

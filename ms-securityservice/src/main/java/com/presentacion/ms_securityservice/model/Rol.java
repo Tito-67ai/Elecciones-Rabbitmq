@@ -1,4 +1,4 @@
-package com.presentacion.ms_securityservice.entity;
+package com.presentacion.ms_securityservice.model;
 
 public enum Rol {
 
