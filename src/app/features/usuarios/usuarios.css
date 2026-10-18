@@ -1,0 +1,15 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.formulario .acciones {
+  justify-content: flex-end;
+}
+
+.acciones-tabla {
+  display: flex;
+  gap: 0.4rem;
+}

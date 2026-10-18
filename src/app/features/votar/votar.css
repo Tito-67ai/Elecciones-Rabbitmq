@@ -1,0 +1,22 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 780px;
+}
+
+.formulario .acciones {
+  justify-content: flex-end;
+}
+
+.resultado {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+
+.resultado p {
+  margin: 0;
+}

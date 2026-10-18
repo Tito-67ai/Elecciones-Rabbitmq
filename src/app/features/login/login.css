@@ -1,0 +1,28 @@
+.pantalla {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(140deg, #1e2746 0%, #2f4fd8 100%);
+}
+
+.caja {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.caja h1 {
+  margin-bottom: 0;
+}
+
+.caja p {
+  margin: 0 0 0.35rem;
+}
+
+.caja .boton {
+  margin-top: 0.35rem;
+}

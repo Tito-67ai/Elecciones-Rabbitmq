@@ -1,0 +1,93 @@
+.contenedor {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 100dvh;
+}
+
+.barra {
+  background: #1e2746;
+  color: #d9e0f2;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.marca {
+  display: flex;
+  flex-direction: column;
+}
+
+.marca strong {
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.marca span {
+  font-size: 0.8rem;
+  color: #8f9ac2;
+}
+
+.barra nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.barra nav a {
+  color: #c3cbe6;
+  text-decoration: none;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.94rem;
+}
+
+.barra nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.barra nav a.activo {
+  background: #2f4fd8;
+  color: #fff;
+  font-weight: 600;
+}
+
+.principal {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.identidad {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.contenido {
+  padding: 1.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 820px) {
+  .contenedor {
+    grid-template-columns: 1fr;
+  }
+
+  .barra nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

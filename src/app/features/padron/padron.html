@@ -1,0 +1,143 @@
+<div class="encabezado-seccion">
+  <div>
+    <h1>Padrón</h1>
+    <p class="texto-suave">Ciudadanos habilitados para emitir su voto.</p>
+  </div>
+
+  @if (puedeEditar()) {
+    <button class="boton" type="button" (click)="nuevo()">Nuevo ciudadano</button>
+  }
+</div>
+
+@if (puedeEditar()) {
+  <form class="tarjeta formulario" (ngSubmit)="guardar()">
+    <h2>{{ editando() === null ? 'Alta de ciudadano' : 'Edición de ciudadano' }}</h2>
+
+    <div class="fila">
+      <label class="campo">
+        <span>Nombre</span>
+        <input name="nombre" [(ngModel)]="formulario.nombre" />
+      </label>
+
+      <label class="campo">
+        <span>Apellido</span>
+        <input name="apellido" [(ngModel)]="formulario.apellido" />
+      </label>
+
+      <label class="campo">
+        <span>DNI</span>
+        <input name="dni" [(ngModel)]="formulario.dni" />
+      </label>
+    </div>
+
+    <div class="fila">
+      <label class="campo">
+        <span>Email</span>
+        <input name="email" type="email" [(ngModel)]="formulario.email" />
+      </label>
+
+      <label class="campo">
+        <span>Dirección</span>
+        <input name="direccion" [(ngModel)]="formulario.direccion" />
+      </label>
+    </div>
+
+    <div class="fila">
+      <button class="boton" type="submit">Guardar</button>
+      <button class="boton secundario" type="button" (click)="cancelar()">Limpiar</button>
+    </div>
+  </form>
+}
+
+@if (puedeListar()) {
+  <section class="tarjeta">
+    <div class="encabezado-seccion">
+      <h2>Listado ({{ filtrados().length }})</h2>
+
+      <label class="campo busqueda">
+        <span>Buscar</span>
+        <input
+          name="busqueda"
+          placeholder="Nombre, DNI o email"
+          [ngModel]="busqueda()"
+          (ngModelChange)="busqueda.set($event)"
+        />
+      </label>
+    </div>
+
+    @if (cargando()) {
+      <p class="texto-suave">Cargando ciudadanos…</p>
+    } @else if (filtrados().length === 0) {
+      <p class="mensaje-vacio">No hay ciudadanos para mostrar.</p>
+    } @else {
+      <div class="tabla-envoltorio">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>DNI</th>
+              <th>Email</th>
+              <th>Dirección</th>
+              <th>Estado</th>
+              @if (puedeEditar()) {
+                <th>Acciones</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (ciudadano of filtrados(); track ciudadano.id) {
+              <tr>
+                <td>{{ ciudadano.nombre }} {{ ciudadano.apellido }}</td>
+                <td>{{ ciudadano.dni }}</td>
+                <td>{{ ciudadano.email }}</td>
+                <td>{{ ciudadano.direccion }}</td>
+                <td>
+                  <span class="insignia" [class.ok]="ciudadano.yaVoto">
+                    {{ ciudadano.yaVoto ? 'Votó' : 'Pendiente' }}
+                  </span>
+                </td>
+                @if (puedeEditar()) {
+                  <td class="acciones-tabla">
+                    <button class="boton secundario chico" type="button" (click)="editar(ciudadano)">
+                      Editar
+                    </button>
+                    <button class="boton peligro chico" type="button" (click)="eliminar(ciudadano)">
+                      Eliminar
+                    </button>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+} @else {
+  <section class="tarjeta">
+    <h2>Consultar ciudadano por DNI</h2>
+    <p class="texto-suave">Tu rol solo permite consultar el padrón de a un ciudadano.</p>
+
+    <form class="fila" (ngSubmit)="consultarPorDni()">
+      <label class="campo">
+        <span>DNI</span>
+        <input name="dniConsulta" [(ngModel)]="dniConsulta" />
+      </label>
+      <button class="boton" type="submit">Consultar</button>
+    </form>
+
+    @if (consultado(); as ciudadano) {
+      <div class="resultado">
+        <p><strong>{{ ciudadano.nombre }} {{ ciudadano.apellido }}</strong></p>
+        <p class="texto-suave">DNI {{ ciudadano.dni }}</p>
+        <p class="texto-suave">Email: {{ ciudadano.email }}</p>
+        <p class="texto-suave">Dirección: {{ ciudadano.direccion }}</p>
+        <span class="insignia" [class.ok]="ciudadano.yaVoto">
+          {{ ciudadano.yaVoto ? 'Ya emitió su voto' : 'Todavía no votó' }}
+        </span>
+      </div>
+    } @else if (consultaRealizada()) {
+      <p class="mensaje-vacio">No se encontró un ciudadano con ese DNI.</p>
+    }
+  </section>
+}

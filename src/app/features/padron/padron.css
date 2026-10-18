@@ -1,0 +1,31 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.formulario .fila:last-child {
+  justify-content: flex-end;
+}
+
+.busqueda {
+  max-width: 280px;
+}
+
+.acciones-tabla {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.resultado {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-start;
+}
+
+.resultado p {
+  margin: 0;
+}

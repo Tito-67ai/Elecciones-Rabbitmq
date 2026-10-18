@@ -1,0 +1,36 @@
+.filtro {
+  max-width: 300px;
+}
+
+.resumen {
+  margin-bottom: 1.25rem;
+}
+
+.resumen article {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.resumen strong {
+  font-size: 1.8rem;
+  line-height: 1.1;
+}
+
+.barra-celda {
+  width: 40%;
+}
+
+.barra {
+  display: block;
+  height: 10px;
+  background: color-mix(in srgb, var(--color-primario) 12%, transparent);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra-relleno {
+  display: block;
+  height: 100%;
+  background: var(--color-primario);
+}

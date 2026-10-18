@@ -1,0 +1,108 @@
+<div class="encabezado-seccion">
+  <div>
+    <h1>Candidatos</h1>
+    <p class="texto-suave">Postulantes agrupados por elección.</p>
+  </div>
+
+  @if (puedeEditar()) {
+    <button class="boton" type="button" (click)="nuevo()">Nuevo candidato</button>
+  }
+</div>
+
+@if (puedeEditar()) {
+  <form class="tarjeta formulario" (ngSubmit)="guardar()">
+    <h2>{{ editando() === null ? 'Alta de candidato' : 'Edición de candidato' }}</h2>
+
+    <div class="fila">
+      <label class="campo">
+        <span>Nombre</span>
+        <input name="nombre" [(ngModel)]="formulario.nombre" />
+      </label>
+
+      <label class="campo">
+        <span>Apellido</span>
+        <input name="apellido" [(ngModel)]="formulario.apellido" />
+      </label>
+
+      <label class="campo">
+        <span>Partido</span>
+        <input name="partido" [(ngModel)]="formulario.partido" />
+      </label>
+
+      <label class="campo">
+        <span>Elección</span>
+        <select name="eleccionId" [(ngModel)]="formulario.eleccionId">
+          <option [ngValue]="null">Seleccioná una elección</option>
+          @for (eleccion of elecciones(); track eleccion.id) {
+            <option [ngValue]="eleccion.id">{{ eleccion.nombre }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="fila acciones">
+      <button class="boton" type="submit">Guardar</button>
+      <button class="boton secundario" type="button" (click)="cancelar()">Limpiar</button>
+    </div>
+  </form>
+}
+
+<section class="tarjeta">
+  <div class="encabezado-seccion">
+    <h2>Listado ({{ filtrados().length }})</h2>
+
+    <label class="campo filtro">
+      <span>Filtrar por elección</span>
+      <select
+        name="filtro"
+        [ngModel]="filtro()"
+        (ngModelChange)="filtro.set($event)"
+      >
+        <option [ngValue]="'todas'">Todas</option>
+        @for (eleccion of elecciones(); track eleccion.id) {
+          <option [ngValue]="eleccion.id">{{ eleccion.nombre }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  @if (cargando()) {
+    <p class="texto-suave">Cargando candidatos…</p>
+  } @else if (filtrados().length === 0) {
+    <p class="mensaje-vacio">No hay candidatos para mostrar.</p>
+  } @else {
+    <div class="tabla-envoltorio">
+      <table>
+        <thead>
+          <tr>
+            <th>Candidato</th>
+            <th>Partido</th>
+            <th>Elección</th>
+            @if (puedeEditar()) {
+              <th>Acciones</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (candidato of filtrados(); track candidato.id) {
+            <tr>
+              <td>{{ candidato.nombre }} {{ candidato.apellido }}</td>
+              <td>{{ candidato.partido }}</td>
+              <td>{{ nombreEleccion(candidato.eleccionId) }}</td>
+              @if (puedeEditar()) {
+                <td class="acciones-tabla">
+                  <button class="boton secundario chico" type="button" (click)="editar(candidato)">
+                    Editar
+                  </button>
+                  <button class="boton peligro chico" type="button" (click)="eliminar(candidato)">
+                    Eliminar
+                  </button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

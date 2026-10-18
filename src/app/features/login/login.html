@@ -1,0 +1,31 @@
+<div class="pantalla">
+  <form class="tarjeta caja" (ngSubmit)="ingresar()">
+    <h1>Elecciones</h1>
+    <p class="texto-suave">Ingresá con tu cuenta para operar el sistema.</p>
+
+    <label class="campo">
+      <span>Usuario</span>
+      <input
+        name="username"
+        autocomplete="username"
+        required
+        [(ngModel)]="modelo.username"
+      />
+    </label>
+
+    <label class="campo">
+      <span>Contraseña</span>
+      <input
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required
+        [(ngModel)]="modelo.password"
+      />
+    </label>
+
+    <button class="boton" type="submit" [disabled]="enviando()">
+      {{ enviando() ? 'Ingresando…' : 'Ingresar' }}
+    </button>
+  </form>
+</div>

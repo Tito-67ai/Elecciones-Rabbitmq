@@ -1,0 +1,24 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.formulario .acciones {
+  justify-content: flex-end;
+}
+
+.casilla {
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.casilla input[type='checkbox'] {
+  width: auto;
+}
+
+.acciones-tabla {
+  display: flex;
+  gap: 0.4rem;
+}

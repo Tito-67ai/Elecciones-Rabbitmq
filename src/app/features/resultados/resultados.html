@@ -1,0 +1,80 @@
+<div class="encabezado-seccion">
+  <div>
+    <h1>Resultados</h1>
+    <p class="texto-suave">Conteo de votos y acta por elección.</p>
+  </div>
+
+  <label class="campo filtro">
+    <span>Elección</span>
+    <select
+      name="eleccionId"
+      [ngModel]="eleccionId()"
+      (ngModelChange)="consultar($event)"
+    >
+      <option [ngValue]="null">Seleccioná una elección</option>
+      @for (eleccion of elecciones(); track eleccion.id) {
+        <option [ngValue]="eleccion.id">{{ eleccion.nombre }}</option>
+      }
+    </select>
+  </label>
+</div>
+
+@if (cargando()) {
+  <p class="texto-suave">Calculando resultados…</p>
+} @else if (acta(); as datos) {
+  <section class="grilla resumen">
+    <article class="tarjeta">
+      <span class="texto-suave">Total de votos</span>
+      <strong>{{ datos.totalVotos }}</strong>
+    </article>
+
+    <article class="tarjeta">
+      <span class="texto-suave">Participación</span>
+      <strong>{{ datos.participacion | number: '1.0-2' }}%</strong>
+      <span class="texto-suave">sobre {{ datos.totalHabilitados }} habilitados</span>
+    </article>
+
+    <article class="tarjeta">
+      <span class="texto-suave">Estado</span>
+      <strong>{{ datos.activa ? 'Abierta' : 'Cerrada' }}</strong>
+      <span class="texto-suave">Fecha {{ datos.fecha }}</span>
+    </article>
+  </section>
+
+  <section class="tarjeta">
+    <h2>{{ datos.nombreEleccion }}</h2>
+
+    @if (datos.resultados.length === 0) {
+      <p class="mensaje-vacio">La elección no tiene candidatos cargados.</p>
+    } @else {
+      <div class="tabla-envoltorio">
+        <table>
+          <thead>
+            <tr>
+              <th>Candidato</th>
+              <th>Partido</th>
+              <th>Votos</th>
+              <th>Comparación</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (resultado of datos.resultados; track resultado.candidatoId) {
+              <tr>
+                <td>{{ resultado.nombre }}</td>
+                <td>{{ resultado.partido }}</td>
+                <td>{{ resultado.votos }}</td>
+                <td class="barra-celda">
+                  <span class="barra">
+                    <span class="barra-relleno" [style.width.%]="porcentaje(resultado.votos)"></span>
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+} @else {
+  <p class="mensaje-vacio">Elegí una elección para ver su conteo.</p>
+}

@@ -1,0 +1,95 @@
+<div class="encabezado-seccion">
+  <div>
+    <h1>Elecciones</h1>
+    <p class="texto-suave">Comicios registrados en el sistema.</p>
+  </div>
+
+  @if (puedeEditar()) {
+    <button class="boton" type="button" (click)="nuevo()">Nueva elección</button>
+  }
+</div>
+
+@if (puedeEditar()) {
+  <form class="tarjeta formulario" (ngSubmit)="guardar()">
+    <h2>{{ editando() === null ? 'Alta de elección' : 'Edición de elección' }}</h2>
+
+    <div class="fila">
+      <label class="campo">
+        <span>Nombre</span>
+        <input name="nombre" [(ngModel)]="formulario.nombre" />
+      </label>
+
+      <label class="campo">
+        <span>Fecha</span>
+        <input name="fecha" type="date" [(ngModel)]="formulario.fecha" />
+      </label>
+    </div>
+
+    <label class="campo">
+      <span>Descripción</span>
+      <textarea name="descripcion" rows="2" [(ngModel)]="formulario.descripcion"></textarea>
+    </label>
+
+    @if (editando() !== null) {
+      <label class="fila casilla">
+        <input name="activa" type="checkbox" [(ngModel)]="formulario.activa" />
+        <span>Elección habilitada para recibir votos</span>
+      </label>
+    }
+
+    <div class="fila acciones">
+      <button class="boton" type="submit">Guardar</button>
+      <button class="boton secundario" type="button" (click)="cancelar()">Limpiar</button>
+    </div>
+  </form>
+}
+
+<section class="tarjeta">
+  <h2>Listado ({{ registros().length }})</h2>
+
+  @if (cargando()) {
+    <p class="texto-suave">Cargando elecciones…</p>
+  } @else if (registros().length === 0) {
+    <p class="mensaje-vacio">Todavía no hay elecciones registradas.</p>
+  } @else {
+    <div class="tabla-envoltorio">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            @if (puedeEditar()) {
+              <th>Acciones</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (eleccion of registros(); track eleccion.id) {
+            <tr>
+              <td>{{ eleccion.nombre }}</td>
+              <td>{{ eleccion.fecha }}</td>
+              <td>{{ eleccion.descripcion }}</td>
+              <td>
+                <span class="insignia" [class.ok]="eleccion.activa">
+                  {{ eleccion.activa ? 'Activa' : 'Cerrada' }}
+                </span>
+              </td>
+              @if (puedeEditar()) {
+                <td class="acciones-tabla">
+                  <button class="boton secundario chico" type="button" (click)="editar(eleccion)">
+                    Editar
+                  </button>
+                  <button class="boton peligro chico" type="button" (click)="eliminar(eleccion)">
+                    Eliminar
+                  </button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

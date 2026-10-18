@@ -1,0 +1,31 @@
+<div class="contenedor">
+  <aside class="barra">
+    <div class="marca">
+      <strong>Elecciones</strong>
+      <span>Gestión electoral</span>
+    </div>
+
+    <nav>
+      @for (enlace of enlaces(); track enlace.ruta) {
+        <a [routerLink]="enlace.ruta" routerLinkActive="activo">{{ enlace.titulo }}</a>
+      }
+    </nav>
+  </aside>
+
+  <div class="principal">
+    <header class="cabecera">
+      <div class="identidad">
+        <strong>{{ username() }}</strong>
+        <span class="insignia">{{ etiquetaRol() }}</span>
+      </div>
+
+      <button class="boton secundario chico" type="button" (click)="salir()">
+        Cerrar sesión
+      </button>
+    </header>
+
+    <main class="contenido">
+      <router-outlet />
+    </main>
+  </div>
+</div>

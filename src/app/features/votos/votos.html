@@ -1,0 +1,54 @@
+<section class="tarjeta">
+  <div class="encabezado-seccion">
+    <h2>{{ titulo() }}</h2>
+
+    <div class="fila">
+      <label class="campo filtro">
+        <span>Elección</span>
+        <select
+          name="filtro"
+          [ngModel]="filtro()"
+          (ngModelChange)="cambiarFiltro($event)"
+        >
+          <option [ngValue]="'todas'">Todas</option>
+          @for (eleccion of elecciones(); track eleccion.id) {
+            <option [ngValue]="eleccion.id">{{ eleccion.nombre }}</option>
+          }
+        </select>
+      </label>
+
+      <button class="boton secundario" type="button" (click)="cargar()">Actualizar</button>
+    </div>
+  </div>
+
+  @if (cargando()) {
+    <p class="texto-suave">Cargando votos…</p>
+  } @else if (registros().length === 0) {
+    <p class="mensaje-vacio">No hay votos registrados para el filtro elegido.</p>
+  } @else {
+    <div class="tabla-envoltorio">
+      <table>
+        <thead>
+          <tr>
+            <th>N.º</th>
+            <th>Elección</th>
+            <th>Candidato</th>
+            <th>DNI</th>
+            <th>Fecha y hora</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (voto of registros(); track voto.id) {
+            <tr>
+              <td>{{ voto.id }}</td>
+              <td>{{ nombreEleccion(voto.eleccionId) }}</td>
+              <td>{{ nombreCandidato(voto.candidatoId) }}</td>
+              <td>{{ voto.dniCiudadano }}</td>
+              <td>{{ voto.fechaHora }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

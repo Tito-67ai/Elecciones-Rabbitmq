@@ -1,0 +1,81 @@
+<div class="encabezado-seccion">
+  <div>
+    <h1>Usuarios</h1>
+    <p class="texto-suave">Cuentas con acceso al sistema y su rol.</p>
+  </div>
+
+  <button class="boton" type="button" (click)="nuevo()">Nuevo usuario</button>
+</div>
+
+<form class="tarjeta formulario" (ngSubmit)="guardar()">
+  <h2>{{ editando() === null ? 'Alta de usuario' : 'Edición de usuario' }}</h2>
+
+  <div class="fila">
+    <label class="campo">
+      <span>Usuario</span>
+      <input name="username" autocomplete="off" [(ngModel)]="formulario.username" />
+    </label>
+
+    <label class="campo">
+      <span>{{ editando() === null ? 'Contraseña' : 'Nueva contraseña (opcional)' }}</span>
+      <input
+        name="password"
+        type="password"
+        autocomplete="new-password"
+        [(ngModel)]="formulario.password"
+      />
+    </label>
+
+    <label class="campo">
+      <span>Rol</span>
+      <select name="rol" [(ngModel)]="formulario.rol">
+        @for (rol of roles; track rol) {
+          <option [ngValue]="rol">{{ etiquetas[rol] }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <div class="fila acciones">
+    <button class="boton" type="submit">Guardar</button>
+    <button class="boton secundario" type="button" (click)="cancelar()">Limpiar</button>
+  </div>
+</form>
+
+<section class="tarjeta">
+  <h2>Listado ({{ registros().length }})</h2>
+
+  @if (cargando()) {
+    <p class="texto-suave">Cargando usuarios…</p>
+  } @else if (registros().length === 0) {
+    <p class="mensaje-vacio">No hay usuarios registrados.</p>
+  } @else {
+    <div class="tabla-envoltorio">
+      <table>
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (usuario of registros(); track usuario.id) {
+            <tr>
+              <td>{{ usuario.username }}</td>
+              <td><span class="insignia">{{ etiquetas[usuario.rol] }}</span></td>
+              <td class="acciones-tabla">
+                <button class="boton secundario chico" type="button" (click)="editar(usuario)">
+                  Editar
+                </button>
+                <button class="boton peligro chico" type="button" (click)="eliminar(usuario)">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

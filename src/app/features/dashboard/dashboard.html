@@ -1,0 +1,42 @@
+<div class="encabezado-seccion">
+  <div>
+    <h1>Hola, {{ username() }}</h1>
+    <p class="texto-suave">
+      Estás operando como
+      <span class="insignia">{{ etiquetaRol() }}</span>
+    </p>
+  </div>
+</div>
+
+@if (puedeConsultarResumen()) {
+  <section class="grilla resumen">
+    <article class="tarjeta">
+      <span class="texto-suave">Elecciones activas</span>
+      <strong>{{ eleccionesActivas() }}</strong>
+      <span class="texto-suave">de {{ totalElecciones() }} registradas</span>
+    </article>
+
+    <article class="tarjeta">
+      <span class="texto-suave">Ciudadanos en el padrón</span>
+      <strong>{{ totalCiudadanos() }}</strong>
+      <span class="texto-suave">{{ yaVotaron() }} ya emitieron su voto</span>
+    </article>
+  </section>
+}
+
+<section>
+  <h2>Accesos</h2>
+
+  @if (accesos().length === 0) {
+    <p class="mensaje-vacio">No tenés secciones habilitadas para tu rol.</p>
+  } @else {
+    <div class="grilla">
+      @for (enlace of accesos(); track enlace.ruta) {
+        <a class="tarjeta acceso" [routerLink]="enlace.ruta">
+          <strong>{{ enlace.titulo }}</strong>
+          <span class="texto-suave">{{ enlace.descripcion }}</span>
+        </a>
+      }
+    </div>
+  }
+</section>
