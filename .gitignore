@@ -28,6 +28,8 @@ ehthumbs.db
 
 # Frontend (worktree del branch frontend)
 /frontend/
+/frontend/.angular/
+/.angular/
 
 # Logs
 *.log
