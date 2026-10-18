@@ -44,9 +44,9 @@ src/app/
 | Pantalla | Ruta | Roles habilitados |
 |---|---|---|
 | Inicio | `/inicio` | todos |
-| Padron | `/padron` | todos (`ELECTOR` solo consulta por DNI) |
-| Elecciones | `/elecciones` | ADMIN, ROOT, AUTORIDAD_MESA, FISCAL |
-| Candidatos | `/candidatos` | ADMIN, ROOT, AUTORIDAD_MESA, FISCAL |
+| Padrón | `/padron` | todos (`ELECTOR` solo consulta por DNI) |
+| Elecciones | `/elecciones` | ADMIN, ROOT, AUTORIDAD_MESA, FISCAL, ELECTOR |
+| Candidatos | `/candidatos` | ADMIN, ROOT, AUTORIDAD_MESA, FISCAL, ELECTOR |
 | Emitir voto | `/votar` | ELECTOR, AUTORIDAD_MESA |
 | Votos emitidos | `/votos` | ADMIN, ROOT, AUTORIDAD_MESA, FISCAL |
 | Resultados | `/resultados` | ADMIN, ROOT, AUTORIDAD_MESA, FISCAL |

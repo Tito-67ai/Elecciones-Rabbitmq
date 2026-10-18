@@ -30,13 +30,13 @@ export const ENLACES: Enlace[] = [
     ruta: '/elecciones',
     titulo: 'Elecciones',
     descripcion: 'Comicios, fechas y estado',
-    roles: ['ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL'],
+    roles: ['ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL', 'ELECTOR'],
   },
   {
     ruta: '/candidatos',
     titulo: 'Candidatos',
     descripcion: 'Postulantes por elección y partido',
-    roles: ['ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL'],
+    roles: ['ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL', 'ELECTOR'],
   },
   {
     ruta: '/votos',

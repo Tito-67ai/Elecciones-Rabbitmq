@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Candidato } from '../../core/models/candidato';
 import { Ciudadano } from '../../core/models/ciudadano';
@@ -7,7 +7,6 @@ import { CandidatoService } from '../../core/services/candidato.service';
 import { CiudadanoService } from '../../core/services/ciudadano.service';
 import { EleccionService } from '../../core/services/eleccion.service';
 import { NotificacionService } from '../../core/services/notificacion.service';
-import { SesionService } from '../../core/services/sesion.service';
 import { VotoService } from '../../core/services/voto.service';
 
 @Component({
@@ -17,19 +16,11 @@ import { VotoService } from '../../core/services/voto.service';
   templateUrl: './votar.html',
 })
 export class Votar {
-  private readonly sesion = inject(SesionService);
   private readonly eleccionesServicio = inject(EleccionService);
   private readonly candidatosServicio = inject(CandidatoService);
   private readonly ciudadanosServicio = inject(CiudadanoService);
   private readonly votosServicio = inject(VotoService);
   private readonly notificaciones = inject(NotificacionService);
-
-  protected readonly puedeEmitir = computed(() =>
-    this.sesion.tieneRol('ELECTOR', 'AUTORIDAD_MESA'),
-  );
-  protected readonly puedeConsultarCandidatos = computed(() =>
-    this.sesion.tieneRol('AUTORIDAD_MESA'),
-  );
 
   protected readonly elecciones = signal<Eleccion[]>([]);
   protected readonly candidatos = signal<Candidato[]>([]);
@@ -40,10 +31,6 @@ export class Votar {
   protected readonly registrando = signal(false);
 
   constructor() {
-    if (!this.puedeConsultarCandidatos()) {
-      return;
-    }
-
     this.eleccionesServicio.listar().subscribe({
       next: (datos) => {
         const activas = datos.filter((eleccion) => eleccion.activa);

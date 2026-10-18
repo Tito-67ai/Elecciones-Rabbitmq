@@ -25,13 +25,13 @@ export const routes: Routes = [
       },
       {
         path: 'elecciones',
-        canActivate: [roleGuard('ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL')],
+        canActivate: [roleGuard('ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL', 'ELECTOR')],
         loadComponent: () =>
           import('./features/elecciones/elecciones').then((m) => m.Elecciones),
       },
       {
         path: 'candidatos',
-        canActivate: [roleGuard('ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL')],
+        canActivate: [roleGuard('ADMIN', 'ROOT', 'AUTORIDAD_MESA', 'FISCAL', 'ELECTOR')],
         loadComponent: () =>
           import('./features/candidatos/candidatos').then((m) => m.Candidatos),
       },

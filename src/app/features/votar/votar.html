@@ -5,88 +5,61 @@
   </div>
 </div>
 
-@if (!puedeConsultarCandidatos()) {
-  <section class="tarjeta">
-    <h2>Consulta previa</h2>
-    <p class="texto-suave">
-      Tu rol permite emitir el voto, pero no consultar elecciones ni candidatos.
-      La autoridad de mesa es quien registra el voto en el sistema.
-    </p>
+<form class="tarjeta formulario" (ngSubmit)="registrar()">
+  <div class="fila">
+    <label class="campo">
+      <span>Elección</span>
+      <select
+        name="eleccionId"
+        [ngModel]="eleccionId()"
+        (ngModelChange)="cambiarEleccion($event)"
+      >
+        <option [ngValue]="null">Seleccioná una elección</option>
+        @for (eleccion of elecciones(); track eleccion.id) {
+          <option [ngValue]="eleccion.id">{{ eleccion.nombre }}</option>
+        }
+      </select>
+    </label>
 
-    <form class="fila" (ngSubmit)="verificarCiudadano()">
-      <label class="campo">
-        <span>DNI</span>
-        <input name="dniConsulta" [(ngModel)]="dni" />
-      </label>
-      <button class="boton" type="submit">Verificar</button>
-    </form>
+    <label class="campo">
+      <span>Candidato</span>
+      <select name="candidatoId" [(ngModel)]="candidatoId">
+        <option [ngValue]="null">Seleccioná un candidato</option>
+        @for (candidato of candidatos(); track candidato.id) {
+          <option [ngValue]="candidato.id">
+            {{ candidato.nombre }} {{ candidato.apellido }} — {{ candidato.partido }}
+          </option>
+        }
+      </select>
+    </label>
+  </div>
 
-    @if (ciudadano(); as datos) {
-      <div class="resultado">
-        <p><strong>{{ datos.nombre }} {{ datos.apellido }}</strong></p>
-        <span class="insignia" [class.ok]="datos.yaVoto">
-          {{ datos.yaVoto ? 'Ya emitió su voto' : 'Habilitado para votar' }}
-        </span>
-      </div>
-    }
-  </section>
-} @else {
-  <form class="tarjeta formulario" (ngSubmit)="registrar()">
-    <div class="fila">
-      <label class="campo">
-        <span>Elección</span>
-        <select
-          name="eleccionId"
-          [ngModel]="eleccionId()"
-          (ngModelChange)="cambiarEleccion($event)"
-        >
-          <option [ngValue]="null">Seleccioná una elección</option>
-          @for (eleccion of elecciones(); track eleccion.id) {
-            <option [ngValue]="eleccion.id">{{ eleccion.nombre }}</option>
-          }
-        </select>
-      </label>
+  <div class="fila">
+    <label class="campo">
+      <span>DNI del ciudadano</span>
+      <input name="dni" [(ngModel)]="dni" />
+    </label>
 
-      <label class="campo">
-        <span>Candidato</span>
-        <select name="candidatoId" [(ngModel)]="candidatoId">
-          <option [ngValue]="null">Seleccioná un candidato</option>
-          @for (candidato of candidatos(); track candidato.id) {
-            <option [ngValue]="candidato.id">
-              {{ candidato.nombre }} {{ candidato.apellido }} — {{ candidato.partido }}
-            </option>
-          }
-        </select>
-      </label>
-    </div>
-
-    <div class="fila">
-      <label class="campo">
-        <span>DNI del ciudadano</span>
-        <input name="dni" [(ngModel)]="dni" />
-      </label>
-
-      <div class="campo">
-        <span>&nbsp;</span>
-        <button class="boton secundario" type="button" (click)="verificarCiudadano()">
-          Verificar padrón
-        </button>
-      </div>
-    </div>
-
-    @if (ciudadano(); as datos) {
-      <div class="resultado">
-        <p><strong>{{ datos.nombre }} {{ datos.apellido }}</strong></p>
-        <span class="insignia" [class.ok]="datos.yaVoto">
-          {{ datos.yaVoto ? 'Ya emitió su voto' : 'Habilitado para votar' }}
-        </span>
-      </div>
-    }
-
-    <div class="fila acciones">
-      <button class="boton" type="submit" [disabled]="registrando()">
-        {{ registrando() ? 'Registrando…' : 'Registrar voto' }}
+    <div class="campo">
+      <span>&nbsp;</span>
+      <button class="boton secundario" type="button" (click)="verificarCiudadano()">
+        Verificar padrón
       </button>
     </div>
-  </form>
-}
+  </div>
+
+  @if (ciudadano(); as datos) {
+    <div class="resultado">
+      <p><strong>{{ datos.nombre }} {{ datos.apellido }}</strong></p>
+      <span class="insignia" [class.ok]="datos.yaVoto">
+        {{ datos.yaVoto ? 'Ya emitió su voto' : 'Habilitado para votar' }}
+      </span>
+    </div>
+  }
+
+  <div class="fila acciones">
+    <button class="boton" type="submit" [disabled]="registrando()">
+      {{ registrando() ? 'Registrando…' : 'Registrar voto' }}
+    </button>
+  </div>
+</form>
