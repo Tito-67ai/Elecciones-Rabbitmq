@@ -60,6 +60,13 @@ public class CiudadanoController {
         return ResponseEntity.ok(ciudadanos);
     }
 
+    @GetMapping("/count")
+    @PreAuthorize("hasAnyRole('ADMIN','ROOT','AUTORIDAD_MESA','FISCAL')")
+    public ResponseEntity<Long> contarHabilitados() {
+
+        return ResponseEntity.ok(ciudadanoService.contarHabilitados());
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','ROOT','AUTORIDAD_MESA','FISCAL')")
     public ResponseEntity<CiudadanoSalidaDTO> obtenerPorId(@PathVariable Long id) {

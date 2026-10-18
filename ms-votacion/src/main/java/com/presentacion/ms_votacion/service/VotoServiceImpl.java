@@ -106,7 +106,7 @@ public class VotoServiceImpl implements VotoService {
 
         List<Candidato> candidatos = candidatoRepository.findByEleccionIdAndActivoTrue(eleccionId);
         long totalVotos = conteo.values().stream().mapToLong(Long::longValue).sum();
-        long totalHabilitados = 0; // Se podria obtener de ms-patron si se expone
+        long totalHabilitados = ciudadanoClient.contarHabilitados();
 
         return Map.of(
                 "eleccionId", eleccion.getId(),

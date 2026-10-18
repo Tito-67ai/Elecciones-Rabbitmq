@@ -11,5 +11,8 @@ public interface CiudadanoClient {
 
     @GetMapping("/ciudadanos/dni/{dni}")
     CiudadanoDTO obtenerPorDni(@PathVariable("dni") String dni);
+
+    @GetMapping("/ciudadanos/count")
+    long contarHabilitados();
 }
 

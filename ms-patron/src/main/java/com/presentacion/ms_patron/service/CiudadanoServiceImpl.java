@@ -88,6 +88,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
     }
 
     @Override
+    public long contarHabilitados() {
+        return ciudadanoRepository.countByActivoTrue();
+    }
+
+    @Override
     @Transactional
     public void marcarYaVoto(String dni) {
 

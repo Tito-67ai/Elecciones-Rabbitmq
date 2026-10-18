@@ -20,6 +20,8 @@ public interface CiudadanoService {
 
     boolean eliminarCiudadano(Long id);
 
+    long contarHabilitados();
+
     void marcarYaVoto(String dni);
 }
 

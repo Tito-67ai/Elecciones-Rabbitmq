@@ -16,5 +16,7 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> {
     Optional<Ciudadano> findByDni(String dni);
 
     boolean existsByDni(String dni);
+
+    long countByActivoTrue();
 }
 
