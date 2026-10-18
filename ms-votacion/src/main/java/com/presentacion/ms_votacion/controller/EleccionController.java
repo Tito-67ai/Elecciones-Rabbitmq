@@ -47,7 +47,7 @@ public class EleccionController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','ROOT','AUTORIDAD_MESA','FISCAL')")
+    @PreAuthorize("hasAnyRole('ADMIN','ROOT','AUTORIDAD_MESA','FISCAL','ELECTOR')")
     public ResponseEntity<List<EleccionSalidaDTO>> listarElecciones() {
 
         List<EleccionSalidaDTO> elecciones = eleccionService.listarElecciones()
@@ -59,7 +59,7 @@ public class EleccionController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','ROOT','AUTORIDAD_MESA','FISCAL')")
+    @PreAuthorize("hasAnyRole('ADMIN','ROOT','AUTORIDAD_MESA','FISCAL','ELECTOR')")
     public ResponseEntity<EleccionSalidaDTO> obtenerPorId(@PathVariable Long id) {
 
         return eleccionService.obtenerPorId(id)
