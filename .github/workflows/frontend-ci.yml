@@ -29,3 +29,14 @@ jobs:
 
       - name: Test
         run: npm test -- --watch=false
+
+  docker-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t elecciones-frontend:${{ github.sha }} .

@@ -20,6 +20,26 @@ Queda en `http://localhost:4200`.
 La URL de la API esta en `src/environments/environment.ts` (`http://localhost:8081` en
 desarrollo). El Gateway ya tiene CORS habilitado para `http://localhost:4200`.
 
+## Docker
+
+La imagen compila la SPA (`npm run build`) y la sirve con Nginx. El `nginx.conf` responde
+el `index.html` para cualquier ruta (SPA) y proxea `/api/**` hacia el **Gateway**
+(`http://gateway:8081`); `environment.production.ts` apunta a `/api`, asi el navegador
+habla con un solo origen y no hace falta CORS.
+
+Como el navegador manda `Origin` incluso en pedidos del mismo origen y el Gateway solo
+permite `http://localhost:4200`, Nginx limpia ese header al proxear: la llamada al Gateway
+es servidor a servidor, asi funciona en cualquier puerto u host.
+
+Se une a la red que crea el backend (`elecciones-network`, ver el `docker-compose.yml` de
+la rama `backend`), por eso el backend tiene que estar levantado primero:
+
+```bash
+docker compose up --build
+```
+
+Queda en `http://localhost:4200`. Para otro puerto: `FRONTEND_PORT=4300 docker compose up --build`.
+
 ## Usuarios de prueba
 
 Los siembra `ms-securityservice`, password `1234`:

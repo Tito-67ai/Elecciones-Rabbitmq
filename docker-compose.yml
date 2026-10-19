@@ -1,0 +1,17 @@
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "${FRONTEND_PORT:-4200}:80"
+    restart: unless-stopped
+    networks:
+      - elecciones-network
+
+networks:
+  elecciones-network:
+    external: true
+    name: elecciones-network
