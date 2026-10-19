@@ -137,4 +137,5 @@ services:
 
 networks:
   elecciones-network:
+    name: elecciones-network
     driver: bridge

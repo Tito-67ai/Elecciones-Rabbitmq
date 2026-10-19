@@ -29,3 +29,7 @@ El repo de configuracion (`elecciones-properties`) lo lee el Config Server; la U
 Usuarios de prueba (ms-securityservice, password `1234`): `root`, `admin`, `autoridad`, `fiscal`, `elector`.
 
 Para levantar todo con Docker: `docker compose up --build` (usa `.env`).
+
+El compose crea la red `elecciones-network` (nombre fijo). El frontend (rama `frontend`)
+trae su propio `docker-compose.yml` que se une a esa red como red externa y proxea `/api`
+hacia el Gateway, asi que se levanta despues del backend.
