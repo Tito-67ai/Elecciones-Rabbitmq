@@ -52,7 +52,8 @@ Cada servicio se puede abrir por separado con `?urls.primaryName=<Nombre>`:
 Eureka (servicios registrados): http://localhost:8761
 
 El Swagger se abre siempre **por el Gateway**: es el unico punto de entrada y agrega el header
-interno `X-Gateway-Secret`. Los servicios de dominio responden 401 si se llaman directo.
+interno `X-Gateway-Secret`. Por eso llamar a los servicios directo falla (ms-patron y
+ms-votacion responden 401; ms-securityservice si permite los paths de Swagger).
 Ojo: `/patron/swagger-ui/...` o `/votacion/swagger-ui/...` (con prefijo) responden, pero su
 `configUrl` es absoluto y terminan mostrando la config del Gateway; para ver un servicio
 puntual usar `?urls.primaryName=` como en la tabla.
