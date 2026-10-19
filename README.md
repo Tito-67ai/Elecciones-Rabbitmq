@@ -40,6 +40,9 @@ docker compose up --build
 
 Queda en `http://localhost:4200`. Para otro puerto: `FRONTEND_PORT=4300 docker compose up --build`.
 
+Para llevar el proyecto completo (backend + frontend) a otra PC, ver la seccion
+"Llevar el proyecto a otra PC (Docker)" del README de la rama `backend`.
+
 ## Usuarios de prueba
 
 Los siembra `ms-securityservice`, password `1234`:
