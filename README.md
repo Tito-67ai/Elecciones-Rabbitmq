@@ -34,6 +34,29 @@ El compose crea la red `elecciones-network` (nombre fijo). El frontend (rama `fr
 trae su propio `docker-compose.yml` que se une a esa red como red externa y proxea `/api`
 hacia el Gateway, asi que se levanta despues del backend.
 
+## Swagger y Eureka
+
+El Gateway agrega los Swagger de los tres servicios de dominio en una sola UI (dropdown de
+definiciones arriba a la derecha):
+
+- Swagger UI (agregado): http://localhost:8081/swagger-ui.html
+
+Cada servicio se puede abrir por separado con `?urls.primaryName=<Nombre>`:
+
+| Servicio | Swagger | api-docs (JSON) |
+|---|---|---|
+| ms-securityservice | http://localhost:8081/swagger-ui/index.html?urls.primaryName=Seguridad | http://localhost:8081/seguridad/v3/api-docs |
+| ms-patron | http://localhost:8081/swagger-ui/index.html?urls.primaryName=Patron | http://localhost:8081/patron/v3/api-docs |
+| ms-votacion | http://localhost:8081/swagger-ui/index.html?urls.primaryName=Votacion | http://localhost:8081/votacion/v3/api-docs |
+
+Eureka (servicios registrados): http://localhost:8761
+
+El Swagger se abre siempre **por el Gateway**: es el unico punto de entrada y agrega el header
+interno `X-Gateway-Secret`. Los servicios de dominio responden 401 si se llaman directo.
+Ojo: `/patron/swagger-ui/...` o `/votacion/swagger-ui/...` (con prefijo) responden, pero su
+`configUrl` es absoluto y terminan mostrando la config del Gateway; para ver un servicio
+puntual usar `?urls.primaryName=` como en la tabla.
+
 ## Llevar el proyecto a otra PC (Docker)
 
 Requisitos: **Docker Desktop** corriendo, **Git** e internet. La primera corrida baja las
